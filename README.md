@@ -41,7 +41,7 @@ if(isset($_POST['code']) && isset($_POST['state']))
 		
         $profile = $provider->getLoggedUserProfile($xstsToken);
 		
-        //BUILD XBLivePlatformEnum and replace with this code
+        //BUILD XboxOneTitleEnum and replace with this code
         //$provider->printLoggedUserListOfTitleIds($xstsToken, XBLivePlatformEnum::XboxOne);
 		
         echo "<pre>";
