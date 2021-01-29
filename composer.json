@@ -8,7 +8,6 @@
             "email": "BigPino67@gmail.com"
         }
     ],
-	"minimum-stability" : "dev",
     "keywords": [
         "oauth",
         "oauth2",
