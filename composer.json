@@ -15,11 +15,11 @@
         "client",
         "authorization",
         "microsoft",
-        "windows azure",
-        "azure",
-        "azure active directory",
+        "microsoft live",
         "xbox",
-        "xbox live"
+        "xbox live",
+        "xbox api",
+        "xbox live api"
     ],
     "require": {
         "php": "^5.6|^7.0|^8.0",
