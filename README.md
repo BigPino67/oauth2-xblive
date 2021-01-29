@@ -29,34 +29,32 @@ $provider = new BigPino67\OAuth2\XBLive\Client\Provider\XBLive([
 
 if(isset($_POST['code']) && isset($_POST['state']))
 {
-	if($_POST['state'] == $provider->getState())
-	{
-		$msaToken = $provider->GetAccessToken('authorization_code', [
+    if($_POST['state'] == $provider->getState())
+    {
+        $msaToken = $provider->GetAccessToken('authorization_code', [
             'scope' => $provider->scope,
             'code' => $_POST['code']
         ]);
 		
-		$xasuToken = $provider->getXasuToken($msaToken);
-		$xstsToken = $provider->getXstsToken($xasuToken);
+        $xasuToken = $provider->getXasuToken($msaToken);
+        $xstsToken = $provider->getXstsToken($xasuToken);
 		
-		$profile = $provider->getLoggedUserProfile($xstsToken);
+        $profile = $provider->getLoggedUserProfile($xstsToken);
 		
-		//BUILD XBLivePlatformEnum and replace with this code
-		//$provider->printLoggedUserListOfTitleIds($xstsToken, XBLivePlatformEnum::XboxOne);
+        //BUILD XBLivePlatformEnum and replace with this code
+        //$provider->printLoggedUserListOfTitleIds($xstsToken, XBLivePlatformEnum::XboxOne);
 		
-		echo "<pre>";
-		print_r($provider->getAchievements($xstsToken, XboxOneTitleEnum::SeaOfThieves, 160));
-		echo "<pre>";
-		
-		
+        echo "<pre>";
+        print_r($provider->getAchievements($xstsToken, XboxOneTitleEnum::SeaOfThieves));
+        echo "<pre>";
     } 
-	else
-	{
-		echo 'Invalid state';
-	}
+    else
+    {
+        echo 'Invalid state';
+    }
 } 
 else
 {
-	echo '<a href="'.$provider->getBaseAuthorizationUrl().'">Login</a>';
+    echo '<a href="'.$provider->getBaseAuthorizationUrl().'">Login</a>';
 }
 ```
