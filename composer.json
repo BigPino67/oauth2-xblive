@@ -1,5 +1,6 @@
 {
     "name": "bigpino67/oauth2-xblive",
+	"type": "library",
     "description": "XBOX Live OAuth 2.0 Client Provider for The PHP League OAuth2-Client",
     "license": "MIT",
     "authors": [
