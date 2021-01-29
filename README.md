@@ -24,7 +24,7 @@ $provider = new BigPino67\OAuth2\XBLive\Client\Provider\XBLive([
     'clientSecret'      => '{YOUR_CLIENT_SECRET}',
     'redirectUri'       => '{YOUR_LOGIN_REDIRECT_URI}',
     'logoutRedirectUri' => '{YOUR_LOGOUT_REDIRECT_URI}',
-	'state'             => '{YOUR_UNIQUE_STATE_HASH}'
+    'state'             => '{YOUR_UNIQUE_STATE_HASH}'
 ]);
 
 if(isset($_POST['code']) && isset($_POST['state']))
