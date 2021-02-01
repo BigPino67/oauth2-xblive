@@ -47,10 +47,6 @@ class XBLive extends AbstractProvider
 
     public function __construct(array $options = [], array $collaborators = [])
     {
-		/*if (isset($options['logoutRedirectUri'])) {
-            $this->logoutRedirectUri = $options['logoutRedirectUri'];
-        }*/
-		
         parent::__construct($options, $collaborators);
     }
 	
@@ -59,14 +55,18 @@ class XBLive extends AbstractProvider
     {
 		//https://docs.microsoft.com/en-us/advertising/guides/authentication-oauth-live-connect?view=bingads-13#request-userconsent
 		
-		$loginUri = $this->urlLogin.'/oauth20_authorize.srf';
-		$loginUri .= '?client_id='.$this->clientId;
-		$loginUri .= '&scope='.implode($this->scopeSeparator, $this->scope);
-		$loginUri .= '&response_type=code';
-		$loginUri .= '&redirect_uri='.urlencode($this->redirectUri);
-		$loginUri .= '&response_mode=form_post';
-		$loginUri .= '&state='.$this->state;
-        return $loginUri;
+		$loginUri = $this->urlLogin.'/oauth20_authorize.srf?';
+		
+		$queryParams = array(
+			"client_id" 	=> $this->clientId,
+			"scope" 		=> implode($this->scopeSeparator, $this->scope),
+			"response_type" => "code",
+			"redirect_uri" 	=> $this->redirectUri,
+			"response_mode" => "form_post",
+			"state" 		=> $this->state
+		);
+
+        return str_replace("%2B", "+", $loginUri . http_build_query($queryParams));
     }
 	
 	/*MustImplement*/
@@ -104,14 +104,17 @@ class XBLive extends AbstractProvider
 
 	public function getLogoutUrl()
     {
-        $logoutUri = $this->urlLogin.'/oauth20_logout.srf';
-        $logoutUri .= '?client_id='.$this->clientId;
+        $logoutUri = $this->urlLogin.'/oauth20_logout.srf?';
+		
+		$queryParams = array(
+			"client_id" => $this->clientId
+		);
 
         if (!empty($this->logoutRedirectUri)) {
-            $logoutUri .= '?redirect_uri=' . urlencode($this->logoutRedirectUri);
+			$queryParams["redirect_uri"] = $this->logoutRedirectUri;
         }
 
-        return $logoutUri;
+        return $logoutUri . http_build_query($queryParams);
     }
 	
 	public function getXasuToken($token)
