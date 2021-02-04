@@ -58,7 +58,6 @@ class AccessToken extends \League\OAuth2\Client\Token\AccessToken
             'access_token',
             'resource_owner_id',
             'refresh_token',
-            'expires_in',
             'expires',
         ]));
     }
