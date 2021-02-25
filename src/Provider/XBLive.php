@@ -38,7 +38,7 @@ class XBLive extends AbstractProvider
 
     public $scope = ['XboxLive.signin', 'XboxLive.offline_access'];
 
-    public $scopeSeparator = '+';
+    public $scopeSeparator = ' ';
 	
 	public $defaultXboxLiveLoginHeaders = ["x-xbl-contract-version" => "1", "Content-Type" => "application/json"];
 	public $defaultXboxLiveApiQueryHeaders = ["Authorization" => "", "x-xbl-contract-version" => "2", "Content-Type" => "application/json"];
@@ -54,19 +54,7 @@ class XBLive extends AbstractProvider
     public function getBaseAuthorizationUrl()
     {
 		//https://docs.microsoft.com/en-us/advertising/guides/authentication-oauth-live-connect?view=bingads-13#request-userconsent
-		
-		$loginUri = $this->urlLogin.'/oauth20_authorize.srf?';
-		
-		$queryParams = array(
-			"client_id" 	=> $this->clientId,
-			"scope" 		=> implode($this->scopeSeparator, $this->scope),
-			"response_type" => "code",
-			"redirect_uri" 	=> $this->redirectUri,
-			"response_mode" => "form_post",
-			"state" 		=> $this->state
-		);
-
-        return str_replace("%2B", "+", $loginUri . http_build_query($queryParams));
+        return $this->urlLogin.'/oauth20_authorize.srf';
     }
 	
 	/*MustImplement*/
