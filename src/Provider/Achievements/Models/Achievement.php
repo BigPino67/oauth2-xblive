@@ -1,14 +1,14 @@
 <?php
 
-namespace BigPino67\OAuth2\XBLive\Client\Provider;
+namespace BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models;
 
-use BigPino67\OAuth2\XBLive\Client\Provider\XBLiveAchievementTitleAssociation;
-use BigPino67\OAuth2\XBLive\Client\Provider\XBLiveAchievementProgression;
-use BigPino67\OAuth2\XBLive\Client\Provider\XBLiveAchievementMediaAsset;
-use BigPino67\OAuth2\XBLive\Client\Provider\XBLiveAchievementTimeWindow;
-use BigPino67\OAuth2\XBLive\Client\Provider\XBLiveAchievementReward;
+use BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models\AchievementTitleAssociation;
+use BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models\AchievementProgression;
+use BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models\AchievementMediaAsset;
+use BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models\AchievementTimeWindow;
+use BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models\AchievementReward;
 
-class XBLiveAchievement
+class Achievement
 {
 	public $id; //String
 	public $serviceConfigId; //String
@@ -53,7 +53,7 @@ class XBLiveAchievement
 		if (isset($data['titleAssociations'])) {
 			for($i=0; $i<count($data["titleAssociations"]); $i++)
 			{
-				array_push($this->titleAssociations, new XBLiveAchievementTitleAssociation($data["titleAssociations"][$i]));
+				array_push($this->titleAssociations, new AchievementTitleAssociation($data["titleAssociations"][$i]));
 			}
         }
 			
@@ -62,13 +62,13 @@ class XBLiveAchievement
         }
 		
 		if (isset($data['progression'])) {
-            $this->progression = new XBLiveAchievementProgression($data['progression']);
+            $this->progression = new AchievementProgression($data['progression']);
         }
 		
 		if (isset($data['mediaAssets'])) {
 			for($i=0; $i<count($data["mediaAssets"]); $i++)
 			{
-				array_push($this->mediaAssets, new XBLiveAchievementMediaAsset($data["mediaAssets"][$i]));
+				array_push($this->mediaAssets, new AchievementMediaAsset($data["mediaAssets"][$i]));
 			}
         }
 		
@@ -105,13 +105,13 @@ class XBLiveAchievement
         }
 		
 		if (isset($data['timeWindow'])) {
-            $this->timeWindow = new XBLiveAchievementProgression($data['timeWindow']);
+            $this->timeWindow = new AchievementProgression($data['timeWindow']);
         }
 		
 		if (isset($data['rewards'])) {
 			for($i=0; $i<count($data["rewards"]); $i++)
 			{
-				array_push($this->rewards, new XBLiveAchievementReward($data["rewards"][$i]));
+				array_push($this->rewards, new AchievementReward($data["rewards"][$i]));
 			}
         }
 		

@@ -1,14 +1,14 @@
 <?php
 
-namespace BigPino67\OAuth2\XBLive\Client\Provider;
+namespace BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models;
 
-class XBLiveAchievementReward
+class AchievementReward
 {
-	public $name; //String
-	public $description; //String
-	public $value; //String
-	public $type; //String
-	public $valueType; //String
+	public String $name;
+	public String $description;
+	public String $value;
+	public String $type;
+	public String $valueType;
 	
     public function __construct($data = [])
     {

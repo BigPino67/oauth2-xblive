@@ -1,12 +1,12 @@
 <?php
 
-namespace BigPino67\OAuth2\XBLive\Client\Provider;
+namespace BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models;
 
-class XBLiveAchievementMediaAsset
+class AchievementMediaAsset
 {
-	public $name; //String
-	public $type; //String
-	public $url; //String
+	public String $name;
+	public String $type;
+	public String $url;
 	
     public function __construct($data = [])
     {

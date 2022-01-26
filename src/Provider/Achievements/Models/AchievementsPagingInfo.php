@@ -1,11 +1,11 @@
 <?php
 
-namespace BigPino67\OAuth2\XBLive\Client\Provider;
+namespace BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models;
 
-class XBLivePagingInfo
+class AchievementsPagingInfo
 {
-	protected $continuationToken = null; //string)
-	protected $totalRecords = 0; //int
+	protected String $continuationToken = "";
+	protected int $totalRecords = 0;
 	
     public function __construct($data = [])
     {

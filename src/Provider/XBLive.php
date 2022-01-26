@@ -8,13 +8,10 @@ use League\OAuth2\Client\Provider\AbstractProvider;
 use League\OAuth2\Client\Provider\Exception\IdentityProviderException;
 use League\OAuth2\Client\Tool\BearerAuthorizationTrait;
 use Psr\Http\Message\ResponseInterface;
-use BigPino67\OAuth2\XBLive\Client\Provider\XBLiveProfileUsers;
 use BigPino67\OAuth2\XBLive\Client\Provider\Exception\XBLiveIdentityProviderException;
 use BigPino67\OAuth2\XBLive\Client\Token\AccessToken;
 use BigPino67\OAuth2\XBLive\Client\Token\XBLiveXasuToken;
 use BigPino67\OAuth2\XBLive\Client\Token\XBLiveXstsToken;
-use BigPino67\OAuth2\XBLive\Client\Provider\Enum\XBLivePlatformEnum;
-use BigPino67\OAuth2\XBLive\Client\Provider\Enum\XboxOneTitleEnum;
 
 class XBLive extends AbstractProvider
 {
@@ -35,6 +32,9 @@ class XBLive extends AbstractProvider
 	/*XBOX Live API URIs*/
 	private $urlXBLiveApiProfile = "https://profile.xboxlive.com";
 	private $uriXBLiveApiAchievements = "https://achievements.xboxlive.com";
+	private $uriXBLiveApiSocial = "https://social.xboxlive.com";
+	private $uriXBLiveApiPeople = "https://peoplehub.xboxlive.com";
+	private $uriXBLiveApiMultiplayer = "https://multiplayeractivity.xboxlive.com";
 
     public $scope = ['XboxLive.signin', 'XboxLive.offline_access'];
 
@@ -149,120 +149,7 @@ class XBLive extends AbstractProvider
 		$this->defaultXboxLiveApiQueryHeaders["Authorization"] = $xstsToken->getAuthorizationHeader();
 		return $this->defaultXboxLiveApiQueryHeaders;
 	}
-	
-	public function getLoggedUserProfile(\BigPino67\OAuth2\XBLive\Client\Token\XBLiveXstsToken $xstsToken)
-    {
-		$requestUrl = $this->urlXBLiveApiProfile . "/users/batch/profile/settings";
-		
-        $requestOptions = [
-			"headers" => $this->getXboxLiveApiQueryHeaders($xstsToken),
-			"body" => json_encode([
-				"userIds" => [$xstsToken->getXstsXuid()],
-				"settings" => ["GameDisplayName", "GameDisplayPicRaw", "Gamerscore", "Gamertag"]
-			])
-		];
 
-		$response = $this->fetchXBLiveTokensDetails(self::METHOD_POST, $requestUrl, $requestOptions);
-		
-		return (new XBLiveProfileUsers($response))->getProfileUsers()[0];
-    }
-	
-	public function getAchievements(\BigPino67\OAuth2\XBLive\Client\Token\XBLiveXstsToken $xstsToken, $titleId = null, $continuationToken = "", $maxItems = 20)
-    {
-		
-		$queryParams = array();
-		if($titleId != null && $titleId != "" && XboxOneTitleEnum::isValidValue($titleId))
-		{
-			$queryParams["titleId"] = $titleId;
-		}
-		$queryParams["continuationToken"] = $continuationToken;
-		$queryParams["maxItems"] = $maxItems;
-		
-		$requestUrl = $this->uriXBLiveApiAchievements . "/users/xuid(".$xstsToken->getXstsXuid().")/achievements?";
-		$requestUrl .= http_build_query($queryParams);
-		
-        $requestOptions = [
-			"headers" => $this->getXboxLiveApiQueryHeaders($xstsToken),
-			"body" => json_encode([])
-		];
-
-		$response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
-		
-		return new XBLiveAchievementsResponse($response);
-	}
-	
-	public function printLoggedUserListOfTitleIds(\BigPino67\OAuth2\XBLive\Client\Token\XBLiveXstsToken $xstsToken, $platform = null)
-    {
-		$requestUrl = $this->uriXBLiveApiAchievements . "/users/xuid(".$xstsToken->getXstsXuid().")/achievements?maxItems=2000000";
-		
-        $requestOptions = [
-			"headers" => $this->getXboxLiveApiQueryHeaders($xstsToken),
-			"body" => json_encode([])
-		];
-
-		$response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
-		
-		if($platform == null || !XBLivePlatformEnum::isValidName($platform))
-			$platform = XBLivePlatformEnum::All;
-		
-		$list = array();
-		for($i=0; $i<count($response["achievements"]); $i++)
-		{
-			$achi = $response["achievements"][$i]["titleAssociations"][0];
-			$platforms = $response["achievements"][$i]["platforms"];
-			
-			$isPlatformRequested = false;
-			if($platform == XBLivePlatformEnum::All)
-			{
-				$isPlatformRequested = true;
-			}
-			else
-			{
-				for($j=0; $j<count($platforms); $j++)
-				{
-					if($platforms[$j] == "XboxOne"){
-						$isPlatformRequested = true;
-						break;
-					}	
-				}
-			}
-			
-			
-			if(!$isPlatformRequested)
-				continue;
-			
-			if(!array_key_exists($achi["id"], $list))
-			{
-				$name = str_replace(" ", "", ucwords($achi["name"]));
-				//$name = str_replace("-", "", $name);
-				$name = str_replace(":", "_", $name);
-				$list[$achi["id"]] = array(
-					"id" => $achi["id"],
-					"name" => $name);
-			}
-		}
-		usort($list, function ($item1, $item2) {
-			return $item1["name"] <=> $item2["name"];
-		});
-		
-		
-
-		$php = "<?php\r\n";
-		$php .= "namespace BigPino67\OAuth2\\XBLive\Client\Provider\Enum;\r\n";
-		$php .= "\r\n";
-		$php .= "use BigPino67\OAuth2\\XBLive\Client\Provider\Enum\BasicEnum;\r\n";
-		$php .= "\r\n";
-		$php .= "abstract class XboxOneTitleEnum extends BasicEnum {\r\n";
-		for($i=0; $i<count($list); $i++)
-		{
-			$php .= '    const '.$list[$i]["name"].' = '.$list[$i]["id"].";\r\n";
-		}
-		$php .= "}\r\n";
-		$php .= "?>\r\n";
-		
-		echo '<textarea type="text"  name="txtarea" style="font-family: Arial;font-size: 12pt;width:100%;height:100vw">'.($php).'</textarea>';
-    }
-	
 	protected function fetchXBLiveTokensDetails($method, $url, array $options = [])
     {
 		$factory = $this->getRequestFactory();

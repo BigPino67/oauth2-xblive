@@ -1,12 +1,12 @@
 <?php
 
-namespace BigPino67\OAuth2\XBLive\Client\Provider;
+namespace BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models;
 
-class XBLiveAchievementProgression
+class AchievementProgression
 {
-	public $achievementState; //String
-	public $requirements; //String
-	public $timeUnlocked; //String
+	public String $achievementState;
+	public $requirements;
+	public String $timeUnlocked;
 	
     public function __construct($data = [])
     {

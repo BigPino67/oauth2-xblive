@@ -1,5 +1,5 @@
 <?php
-namespace BigPino67\OAuth2\XBLive\Client\Provider\Enum;
+namespace BigPino67\OAuth2\XBLive\Client\Enum;
 
 abstract class BasicEnum {
     private static $constCacheArray = NULL;

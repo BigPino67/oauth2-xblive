@@ -16,6 +16,8 @@ class XBLiveIdentityProviderException extends IdentityProviderException
      */
     public static function clientException(ResponseInterface $response, $data)
     {
+        var_dump($response);
+        echo $response->getStatusCode();
         return static::fromResponse(
             $response,
             isset($data['message']) ? $data['message'] : json_encode($data)

@@ -1,11 +1,11 @@
 <?php
 
-namespace BigPino67\OAuth2\XBLive\Client\Provider;
+namespace BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Response;
 
-use BigPino67\OAuth2\XBLive\Client\Provider\XBLiveAchievement;
-use BigPino67\OAuth2\XBLive\Client\Provider\XBLivePagingInfo;
+use BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models\AchievementsPagingInfo;
+use BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models\Achievement;
 
-class XBLiveAchievementsResponse
+class AchievementsResponse
 {
 	protected $achievements = array(); //array( Achievements )
 	protected $pagingInfo; //PagingInfo
@@ -24,10 +24,10 @@ class XBLiveAchievementsResponse
 			
         for($i=0; $i<count($data["achievements"]); $i++)
 		{
-			array_push($this->achievements, new XBLiveAchievement($data["achievements"][$i]));
+			array_push($this->achievements, new Achievement($data["achievements"][$i]));
 		}
 		
-		$this->pagingInfo = new XBLivePagingInfo($data["pagingInfo"]);
+		$this->pagingInfo = new AchievementsPagingInfo($data["pagingInfo"]);
     }
 	
 	public function getAchievements()

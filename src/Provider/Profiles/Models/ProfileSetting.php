@@ -1,8 +1,8 @@
 <?php
 
-namespace BigPino67\OAuth2\XBLive\Client\Provider;
+namespace BigPino67\OAuth2\XBLive\Client\Provider\Profiles\Models;
 
-class XBLiveProfileSetting
+class ProfileSetting
 {
 	protected $gameDisplayName = null;
     protected $gameDisplayPicRaw = null;

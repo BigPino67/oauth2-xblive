@@ -1,11 +1,11 @@
 <?php
 
-namespace BigPino67\OAuth2\XBLive\Client\Provider;
+namespace BigPino67\OAuth2\XBLive\Client\Provider\Achievements\Models;
 
-class XBLiveAchievementTimeWindow
+class AchievementTimeWindow
 {
-	public $startDate; //Date
-	public $endDate; //Date
+	public \DateTime $startDate;
+	public \DateTime $endDate;
 	
     public function __construct($data = [])
     {

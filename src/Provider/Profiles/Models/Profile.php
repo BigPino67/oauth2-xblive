@@ -1,10 +1,10 @@
 <?php
 
-namespace BigPino67\OAuth2\XBLive\Client\Provider;
+namespace BigPino67\OAuth2\XBLive\Client\Provider\Profiles\Models;
 
-use BigPino67\OAuth2\XBLive\Client\Provider\XBLiveProfileSetting;
+use BigPino67\OAuth2\XBLive\Client\Provider\Profiles\Models\XBLiveProfileSetting;
 
-class XBLiveProfile
+class Profile
 {
 	protected $id = null;
     protected $hostId = null;
@@ -20,7 +20,7 @@ class XBLiveProfile
             $this->hostId = $data['hostId'];
         }
 		if (isset($data['settings'])) {
-            $this->settings = new XBLiveProfileSetting($data['settings']);
+            $this->settings = new ProfileSetting($data['settings']);
         }
 		if (isset($data['isSponsoredUser'])) {
             $this->isSponsoredUser = $data['isSponsoredUser'];
