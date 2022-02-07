@@ -15,13 +15,13 @@ class AchievementsProvider extends XBLive
 
     private XBLiveXstsToken $XstsToken;
 
-    public function __construct(XBLiveXstsToken $xstsToken)
+    public function __construct(XBLiveXstsToken $xstsToken, array $collaborators = [])
     {
-        parent::__construct();
+        parent::__construct([], $collaborators);
         $this->XstsToken = $xstsToken;
     }
 
-    public function getAchievements(String $titleId = "", int $maxItems = 20, String $continuationToken = "")
+    public function getAchievements(string $titleId = "", int $maxItems = 20, String $continuationToken = "")
     {
         $queryParams = array();
         if($titleId != null && $titleId != "" && XboxOneTitleEnum::isValidValue($titleId))

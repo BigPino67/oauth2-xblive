@@ -8,7 +8,17 @@ class ProfileSetting
     protected $gameDisplayPicRaw = null;
     protected $gamerscore = null;
     protected $gamertag = null;
-	
+    protected $accountTier = null;
+    protected $xboxOneRep = null;
+    protected $preferredColor = null;
+    protected $realName = null;
+    protected $bio = null;
+    protected $location = null;
+    protected $watermarks = null;
+    protected $tenureLevel = null;
+    protected $isDeleted = null;
+    protected $showUserAsAvatar = null;
+
     public function __construct($data = [])
     {
         for($i=0; $i<count($data); $i++)
@@ -24,6 +34,26 @@ class ProfileSetting
 				$this->gamerscore = $value;
 			else if($id == "Gamertag")
 				$this->gamertag = $value;
+			else if($id == "AccountTier")
+				$this->accountTier = $value;
+			else if($id == "XboxOneRep")
+				$this->xboxOneRep = $value;
+			else if($id == "PreferredColor")
+				$this->preferredColor = $value;
+			else if($id == "RealName")
+				$this->realName = $value;
+			else if($id == "Bio")
+				$this->bio = $value;
+			else if($id == "Location")
+				$this->location = $value;
+			else if($id == "Watermarks")
+				$this->watermarks = $value;
+			else if($id == "TenureLevel")
+				$this->tenureLevel = $value;
+			else if($id == "IsDeleted")
+				$this->isDeleted = $value;
+			else if($id == "ShowUserAsAvatar")
+				$this->showUserAsAvatar = $value;
 		}
     }
 	
@@ -45,5 +75,55 @@ class ProfileSetting
 	public function getGamertag()
 	{
 		return $this->gamertag;
+	}
+
+	public function getAccountTier()
+	{
+		return $this->accountTier;
+	}
+
+	public function getXboxOneRep()
+	{
+		return $this->xboxOneRep;
+	}
+
+	public function getPreferredColor()
+	{
+		return $this->preferredColor;
+	}
+
+	public function getRealName()
+	{
+		return $this->realName;
+	}
+
+	public function getBio()
+	{
+		return $this->bio;
+	}
+
+	public function getLocation()
+	{
+		return $this->location;
+	}
+
+	public function getWatermarks()
+	{
+		return $this->watermarks;
+	}
+
+	public function getTenureLevel()
+	{
+		return $this->tenureLevel;
+	}
+
+	public function getIsDeleted()
+	{
+		return $this->isDeleted;
+	}
+
+	public function getShowUserAsAvatar()
+	{
+		return $this->showUserAsAvatar;
 	}
 }
