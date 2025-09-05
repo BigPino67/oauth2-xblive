@@ -58,4 +58,43 @@ class UserStatsProvider extends XBLive
         //TODO: response object;
         return $response;
     }
+
+    public function getStatisticsBatch(string $titleId, string $language = "en")
+    {
+        //TODO: response object;
+        return $this->getStatisticsBatchByXuids([$this->XstsToken->getXstsXuid()], $titleId, $language);
+    }
+
+
+
+    public function getStatisticsBatchByXuids(array $xuids, string $titleId, string $language = "en")
+    {
+        $requestUrl = $this->urlXBLiveApiUserStats . "/batch";
+
+        $requestOptions = [
+            "headers" => [
+                "Authorization" => $this->XstsToken->getAuthorizationHeader(),
+                "Content-Type" => "application/json; charset=UTF-8",
+                "x-xbl-contract-version" => "2",
+                "Accept-Language" => $language
+            ],
+            "body" => json_encode([
+                "arrangebyfield"    => "xuid",
+                "groups"            => [[
+                    "name" => "Hero",
+                    "titleId" => $titleId,
+                ]],
+                "stats"             => [[
+                    "name"              => "MinutesPlayed",
+                    "titleId"           => $titleId
+                ]],
+                "xuids"             => $xuids
+            ])
+        ];
+
+        $response = $this->fetchXBLiveTokensDetails(self::METHOD_POST, $requestUrl, $requestOptions);
+
+        //TODO: response object;
+        return $response;
+    }
 }

@@ -2,6 +2,7 @@
 
 namespace BigPino67\OAuth2\XBLive\Client\Provider\Social;
 
+use BigPino67\OAuth2\XBLive\Client\Provider\Social\Response\SocialResponse;
 use BigPino67\OAuth2\XBLive\Client\Provider\XBLive;
 use BigPino67\OAuth2\XBLive\Client\Token\XBLiveXstsToken;
 
@@ -32,7 +33,23 @@ class SocialProvider extends XBLive
 
         $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
 
-        //TODO: response object;
+        return new SocialResponse($response);
+    }
+
+    public function getPeople()
+    {
+        $requestUrl = $this->urlXBLiveApiSocial . "/users/me/people";
+
+        $requestOptions = [
+            "headers" => [
+                "Authorization" => $this->XstsToken->getAuthorizationHeader(),
+                "Content-Type" => "application/json; charset=UTF-8",
+                "x-xbl-contract-version" => "2",
+            ]
+        ];
+
+        $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
+
         return $response;
     }
 
@@ -50,8 +67,7 @@ class SocialProvider extends XBLive
 
         $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
 
-        //TODO: response object;
-        return $response;
+        return new SocialResponse($response);
     }
 
     public function getSummaryByGamertag(string $gamertag)
@@ -68,7 +84,6 @@ class SocialProvider extends XBLive
 
         $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
 
-        //TODO: response object;
-        return $response;
+        return new SocialResponse($response);
     }
 }

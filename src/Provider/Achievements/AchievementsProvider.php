@@ -21,26 +21,32 @@ class AchievementsProvider extends XBLive
         $this->XstsToken = $xstsToken;
     }
 
-    public function getAchievements(string $titleId = "", int $maxItems = 20, String $continuationToken = "")
+    public function getAchievements(string $titleId = "", string $language = "en", int $maxItems = 1000, String $continuationToken = "")
+    {
+        return $this->getAchievementsByXuid($this->XstsToken->getXstsXuid(), $titleId, $language, $maxItems, $continuationToken);
+    }
+
+    public function getAchievementsByXuid(string $xuid, string $titleId = "", string $language = "en", int $maxItems = 1000, String $continuationToken = "")
     {
         $queryParams = array();
-        if($titleId != null && $titleId != "" && XboxOneTitleEnum::isValidValue($titleId))
+        if($titleId != null && $titleId != "")
         {
             $queryParams["titleId"] = $titleId;
         }
         $queryParams["continuationToken"] = $continuationToken;
         $queryParams["maxItems"] = $maxItems;
 
-        $requestUrl = $this->uriXBLiveApiAchievements . "/users/xuid(".$this->XstsToken->getXstsXuid().")/achievements?";
+        $requestUrl = $this->uriXBLiveApiAchievements . "/users/xuid(".$xuid.")/achievements?";
         $requestUrl .= http_build_query($queryParams);
 
         $requestOptions = [
             "headers" => [
                 "Authorization" => $this->XstsToken->getAuthorizationHeader(),
-                "x-xbl-contract-version" => "2",
+                "x-xbl-contract-version" => "4",
                 "Content-Type" => "application/json",
-            ],
-            "body" => json_encode([])
+                "Accept" => "application/json",
+                "Accept-Language" => $language,
+            ]
         ];
 
         $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);

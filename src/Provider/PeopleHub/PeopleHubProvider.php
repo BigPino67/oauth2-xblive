@@ -3,6 +3,7 @@
 namespace BigPino67\OAuth2\XBLive\Client\Provider\PeopleHub;
 
 
+use BigPino67\OAuth2\XBLive\Client\Enum\FriendTypeEnum;
 use BigPino67\OAuth2\XBLive\Client\Provider\XBLive;
 use League\OAuth2\Client\Grant\AbstractGrant;
 use League\OAuth2\Client\Provider\AbstractProvider;
@@ -31,20 +32,15 @@ class PeopleHubProvider extends XBLive
 
     public function getCurrentProfile(String $language = "en")
     {
-        $requestUrl = $this->uriXBLiveApiPeople . "/users/me/people/xuids(".$this->XstsToken->getXstsXuid().")/decoration/broadcast,multiplayersummary,preferredcolor,socialManager,tournamentSummary";
-
-        $requestOptions = [
-            "headers" => [
-                "Authorization" => $this->XstsToken->getAuthorizationHeader(),
-                "x-xbl-contract-version" => "1",
-                "Accept-Language" => $language
-            ]
-        ];
-
-        $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
-
         //TODO: Return objet response
-        return ($response);
+        return $this->getProfileByXuid($this->XstsToken->getXstsXuid(), $language);
+    }
+
+    public function getProfileByXuid(string $xuid, string $language = "en")
+    {
+        $ownerId = "xuids(".$xuid.")";
+        //TODO: Return objet response
+        return $this->getProfile($ownerId, $language);
     }
 
     public function getProfileLinkedAccounts(String $language = "en")
@@ -65,9 +61,21 @@ class PeopleHubProvider extends XBLive
         return ($response);
     }
 
-    public function getProfileByXuid(string $xuid, string $language = "en")
+    public function getFriends(FriendTypeEnum $friendTypeEnum, string $language = "en")
     {
-        $requestUrl = $this->uriXBLiveApiPeople . "/users/me/people/xuids(".$xuid.")/decoration/broadcast,multiplayersummary,preferredcolor,socialManager,tournamentSummary,presenceDetail";
+        $response = null;
+        if($friendTypeEnum == FriendTypeEnum::All)
+            $response = $this->getFriendsAll($language);
+        elseif ($friendTypeEnum == FriendTypeEnum::Friends)
+            $response = $this->getFriendsOnly($language);
+        elseif ($friendTypeEnum == FriendTypeEnum::FollowedPeople)
+            $response = $this->getFollowedPeople($language);
+        return $response;
+    }
+
+    private function getFriendsAll(string $language = "en")
+    {
+        $requestUrl = $this->uriXBLiveApiPeople . "/users/me/people/social/decoration/detail,broadcast,multiplayersummary,preferredcolor,socialManager,presenceDetail";
 
         $requestOptions = [
             "headers" => [
@@ -83,14 +91,50 @@ class PeopleHubProvider extends XBLive
         return ($response);
     }
 
-    public function getFriends(string $language = "en")
+    private function getFriendsOnly(string $language = "en")
     {
-        $requestUrl = $this->uriXBLiveApiPeople . "/users/me/people/social/decoration/broadcast,multiplayersummary,preferredcolor,socialManager,presenceDetail";
+        $requestUrl = $this->uriXBLiveApiPeople . "/users/me/people/friends/decoration/detail,broadcast,multiplayersummary,preferredcolor,socialManager,presenceDetail";
 
         $requestOptions = [
             "headers" => [
                 "Authorization" => $this->XstsToken->getAuthorizationHeader(),
-                "x-xbl-contract-version" => "1",
+                "x-xbl-contract-version" => "7",
+                "Accept-Language" => $language
+            ]
+        ];
+
+        $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
+
+        //TODO: Return objet response
+        return ($response);
+    }
+
+    private function getFollowedPeople(string $language = "en")
+    {
+        $requestUrl = $this->uriXBLiveApiPeople . "/users/me/people/social/decoration/detail,broadcast,multiplayersummary,preferredcolor,socialManager,presenceDetail";
+
+        $requestOptions = [
+            "headers" => [
+                "Authorization" => $this->XstsToken->getAuthorizationHeader(),
+                "x-xbl-contract-version" => "7",
+                "Accept-Language" => $language
+            ]
+        ];
+
+        $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
+
+        //TODO: Return objet response
+        return ($response);
+    }
+
+    public function getFollowers(string $language = "en")
+    {
+        $requestUrl = $this->uriXBLiveApiPeople . "/users/me/people/followers/decoration/detail,broadcast,multiplayersummary,preferredcolor,socialManager,presenceDetail";
+
+        $requestOptions = [
+            "headers" => [
+                "Authorization" => $this->XstsToken->getAuthorizationHeader(),
+                "x-xbl-contract-version" => "7",
                 "Accept-Language" => $language
             ]
         ];
@@ -169,6 +213,24 @@ class PeopleHubProvider extends XBLive
                 "Authorization" => $this->XstsToken->getAuthorizationHeader(),
                 "x-xbl-contract-version" => "1",
                 "Content-Type" => "application/json",
+                "Accept-Language" => $language
+            ]
+        ];
+
+        $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
+
+        //TODO: Return objet response
+        return ($response);
+    }
+
+    private function getProfile(String $ownerId, String $language = "en")
+    {
+        $requestUrl = $this->uriXBLiveApiPeople . "/users/me/people/".$ownerId."/decoration/detail,broadcast,multiplayersummary,preferredcolor,socialManager,tournamentSummary,presenceDetail";
+
+        $requestOptions = [
+            "headers" => [
+                "Authorization" => $this->XstsToken->getAuthorizationHeader(),
+                "x-xbl-contract-version" => "7",
                 "Accept-Language" => $language
             ]
         ];

@@ -18,7 +18,7 @@ class AccountsProvider extends XBLive
         $this->XstsToken = $xstsToken;
     }
 
-    public function getFamilyMembers()
+    public function getFamilyMembers(string $language = "en")
     {
         $requestUrl = $this->urlXBLiveApiAccounts . "/family/memberXuid(".$this->XstsToken->getXstsXuid().")";
 
@@ -26,7 +26,7 @@ class AccountsProvider extends XBLive
             "headers" => [
                 "Authorization" => $this->XstsToken->getAuthorizationHeader(),
                 "x-xbl-contract-version" => "3",
-                "Accept-Language" => "en",
+                "Accept-Language" => $language,
             ]
         ];
 

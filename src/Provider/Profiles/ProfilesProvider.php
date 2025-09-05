@@ -22,11 +22,17 @@ class ProfilesProvider extends XBLive
 
     public function getCurrentProfile()
     {
+        //TODO: response object;
+        return $this->getProfileByXuid($this->XstsToken->getXstsXuid());
+    }
+
+    public function getProfileByXuid(string $xuid)
+    {
         $queryParams = [
             "settings" => "GameDisplayPicRaw,Gamerscore,Gamertag,AccountTier,XboxOneRep,PreferredColor,RealName,Bio,TenureLevel,Watermarks,Location,IsDeleted,ShowUserAsAvatar"
         ];
 
-        $requestUrl = $this->urlXBLiveApiProfile . "/users/xuid(".$this->XstsToken->getXstsXuid().")/profile/settings?";
+        $requestUrl = $this->urlXBLiveApiProfile . "/users/xuid(".$xuid.")/profile/settings?";
         $requestUrl .= http_build_query($queryParams);
 
         $requestOptions = [
@@ -37,13 +43,18 @@ class ProfilesProvider extends XBLive
             ]
         ];
 
-        $response = $this->fetchXBLiveTokensDetails(self::METHOD_POST, $requestUrl, $requestOptions);
+        $response = $this->fetchXBLiveTokensDetails(self::METHOD_GET, $requestUrl, $requestOptions);
 
         //TODO: response object;
         return $response;
     }
 
     public function getLoggedUserProfile()
+    {
+        return $this->getUserProfileByXuid($this->XstsToken->getXstsXuid());
+    }
+
+    public function getUserProfileByXuid($xuid)
     {
         $requestUrl = $this->urlXBLiveApiProfile . "/users/batch/profile/settings";
 
@@ -54,7 +65,7 @@ class ProfilesProvider extends XBLive
                 "Content-Type" => "application/json",
             ],
             "body" => json_encode([
-                "userIds" => [$this->XstsToken->getXstsXuid()],
+                "userIds" => [$xuid],
                 "settings" => ["GameDisplayName", "GameDisplayPicRaw", "Gamerscore", "Gamertag", "AccountTier", "XboxOneRep", "PreferredColor","RealName","Bio","TenureLevel","Watermarks","Location","IsDeleted","ShowUserAsAvatar"]
             ])
         ];
