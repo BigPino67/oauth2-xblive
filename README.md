@@ -58,3 +58,12 @@ else
     echo '<a href="'.$provider->getBaseAuthorizationUrl().'">Login</a>';
 }
 ```
+
+ ## Examples
+
+With this library, you can build a web page that looks like this :
+![alt text](https://github.com/BigPino67/oauth2-xblive/blob/master/examples/Profile.jpg?raw=true)
+![alt text](https://github.com/BigPino67/oauth2-xblive/blob/master/examples/TitleAchievements.jpg?raw=true)
+![alt text](https://github.com/BigPino67/oauth2-xblive/blob/master/examples/Friends.jpg?raw=true)
+![alt text](https://github.com/BigPino67/oauth2-xblive/blob/master/examples/Profile_Friend.jpg?raw=true)
+![alt text](https://github.com/BigPino67/oauth2-xblive/blob/master/examples/TitleAchievements_Friend.jpg?raw=true)
